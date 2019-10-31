@@ -36,7 +36,6 @@ if (command == "do-what-it-says") {
     fs.readFile('./random.txt', 'utf8', function(err, data) {
         if (err) throw err;
         inputArr = data.split(",");
-        console.log(inputArr);
         if (inputArr[0] === 'spotify-this-song') {
             spotifyThis(inputArr[1]);
         }
@@ -67,7 +66,6 @@ function spotifyThis(item2Search) {
         }
        
         
-        //console.log(data.tracks.items[0]);
         printArtist(data.tracks.items[0].artists);
         console.log("Song Title: " + data.tracks.items[0].name);
         console.log("Song Preview: " + data.tracks.items[0].external_urls.spotify);
@@ -109,7 +107,7 @@ function movieThis(item2Search) {
 function concertThis(item2Search) {
     axios.get("https://rest.bandsintown.com/artists/" + item2Search + "/events?app_id=" + bandsAPIKey).then(function(response) {
         if(response.data[0]) {
-            console.log(itemToFind + "'s upcomiing events:\n")
+            console.log(item2Search + "'s upcomiing events:\n")
             for(i = 0; i < response.data.length; i++) {
                 console.log("Venue: " + response.data[i].venue.name);
                 console.log("Location: " + response.data[i].venue.city + ", " + response.data[i].venue.country);
@@ -130,8 +128,8 @@ function inputFormat(userInput) {
     if (command === 'concert-this' || 'movie-this') {
         userInput.replace(" ", "+");
     }
-    else if (command === 'do-what-it-says') {
-        let tempString = userInput.slice(1, userInput.length - 2);
+    if (command === 'do-what-it-says') {
+        let tempString = userInput.slice(1, userInput.length - 1);
         formattedInput = tempString.replace(" ", "+");
     }
     return formattedInput;
